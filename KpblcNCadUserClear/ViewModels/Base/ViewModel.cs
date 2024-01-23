@@ -35,5 +35,4 @@ namespace KpblcNCadUserClear.ViewModels.Base
 
         private string _title;
     }
-
 }
