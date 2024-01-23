@@ -1,6 +1,6 @@
 ﻿namespace KpblcNCadUserClear.Data
 {
-    internal class NCadApplication
+    public class NCadApplication
     {
         public NCadApplication(string RegistryHiveName)
         {
