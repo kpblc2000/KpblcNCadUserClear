@@ -26,5 +26,12 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+        <UniformGrid Grid.Row="1"
+                     Rows="1"
+                     HorizontalAlignment="Right">
+            <Button Content="Очистить"
+                    Command="{Binding ClearCommand}" />
+            <Button Content="Отмена" />
+        </UniformGrid>
     </Grid>
 </Window>
