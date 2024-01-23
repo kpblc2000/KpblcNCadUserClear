@@ -2,9 +2,11 @@
 using KpblcNCadUserClear.Repositories;
 using KpblcNCadUserClear.ViewModels.Base;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows.Input;
 using KpblcNCadUserClear.Commands;
+using Microsoft.Win32;
 
 namespace KpblcNCadUserClear.ViewModels
 {
@@ -30,12 +32,19 @@ namespace KpblcNCadUserClear.ViewModels
 
         public void OnClearCommandExecuted(object p)
         {
-
+            foreach (NCadApplication application in ApplicationList.Where(o => o.CheckedToClear))
+            {
+                string parentPath = Path.GetDirectoryName(application.RegistryName);
+                using (RegistryKey key = Registry.CurrentUser.OpenSubKey(parentPath, true))
+                {
+                    key.DeleteSubKeyTree(application.RegistryName.Substring(parentPath.Length + 1));
+                }
+            }
         }
 
         public bool CanClearCommandExecute(object p)
         {
-            return ApplicationList.Select(o => o.CheckedToClear).Any();
+            return ApplicationList.Where(o => o.CheckedToClear).Any();
         }
 
         private List<NCadApplication> _applicationList;
