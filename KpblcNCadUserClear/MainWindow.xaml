@@ -30,8 +30,10 @@
                      Rows="1"
                      HorizontalAlignment="Right">
             <Button Content="Очистить"
-                    Command="{Binding ClearCommand}" />
-            <Button Content="Отмена" />
+                    Command="{Binding ClearCommand}"
+                    Click="OnCloseButtonClick" />
+            <Button Content="Отмена"
+                    Click="OnCloseButtonClick" />
         </UniformGrid>
     </Grid>
 </Window>
