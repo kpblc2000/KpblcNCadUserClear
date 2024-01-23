@@ -21,7 +21,7 @@ namespace KpblcNCadUserClear.Data
         public string Version { get; }
         /// <summary> Надо ли очищать данные </summary>
         public bool CheckedToClear { get; set; }
-
+        /// <summary> Каталог внутри %AppData% с данными по текущему дополнению / платформе </summary>
         public string AppDataSubFolder
         {
             get

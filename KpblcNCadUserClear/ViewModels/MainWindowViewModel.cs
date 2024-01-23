@@ -39,6 +39,11 @@ namespace KpblcNCadUserClear.ViewModels
                 {
                     key.DeleteSubKeyTree(application.RegistryName.Substring(parentPath.Length + 1));
                 }
+
+                if (Directory.Exists(application.AppDataSubFolder))
+                {
+                    Directory.Delete(application.AppDataSubFolder, true);
+                }
             }
         }
 
