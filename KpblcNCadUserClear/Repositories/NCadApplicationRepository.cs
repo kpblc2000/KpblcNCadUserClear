@@ -1,5 +1,7 @@
 ﻿using KpblcNCadUserClear.Data;
+using Microsoft.Win32;
 using System.Collections.Generic;
+using System.IO;
 
 namespace KpblcNCadUserClear.Repositories
 {
@@ -7,13 +9,33 @@ namespace KpblcNCadUserClear.Repositories
     {
         public IEnumerable<NCadApplication> Get()
         {
-            return new List<NCadApplication>
+            RegistryKey mainRegHive = Registry.CurrentUser.OpenSubKey(_hiveName);
+            if (mainRegHive == null)
             {
-                new NCadApplication(@"Компьютер\HKEY_CURRENT_USER\SOFTWARE\Nanosoft\nanoCAD x64\23.1"),
-                new NCadApplication(@"Компьютер\HKEY_CURRENT_USER\SOFTWARE\Nanosoft\nanoCAD x64\23.0"),
-                new NCadApplication(@"Компьютер\HKEY_CURRENT_USER\SOFTWARE\Nanosoft\nanoCAD x64\24.0"),
-                new NCadApplication(@"Компьютер\HKEY_CURRENT_USER\SOFTWARE\Nanosoft\nanoCAD x64 Plus\20")
-            };
+                return null;
+            }
+
+            List<NCadApplication> res = new List<NCadApplication>();
+            int index = mainRegHive.Name.IndexOf(@"\") + 1;
+
+            foreach (string keyName in mainRegHive.GetSubKeyNames())
+            {
+                if (keyName.ToUpper().StartsWith("NANO"))
+                {
+                    using (RegistryKey subKey = mainRegHive.OpenSubKey(keyName))
+                    {
+                        foreach (string subKeyName in subKey.GetSubKeyNames())
+                        {
+                            res.Add(new NCadApplication(Path.Combine(subKey.Name, subKeyName).Substring(index)));
+                        }
+                    }
+                }
+            }
+
+            return res;
+
         }
+
+        private readonly string _hiveName = @"Software\Nanosoft";
     }
 }
