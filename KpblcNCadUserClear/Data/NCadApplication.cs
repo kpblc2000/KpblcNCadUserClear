@@ -1,4 +1,8 @@
-﻿namespace KpblcNCadUserClear.Data
+﻿using System;
+using System.IO;
+using Microsoft.Win32;
+
+namespace KpblcNCadUserClear.Data
 {
     public class NCadApplication
     {
@@ -17,5 +21,33 @@
         public string Version { get; }
         /// <summary> Надо ли очищать данные </summary>
         public bool CheckedToClear { get; set; }
+
+        public string AppDataSubFolder
+        {
+            get
+            {
+                using (RegistryKey key = Registry.CurrentUser.OpenSubKey(RegistryName))
+                {
+                    if (key == null)
+                    {
+                        return string.Empty;
+                    }
+
+                    var value = key.GetValue("UserDataDir");
+                    if (value == null)
+                    {
+                        string path = Path.Combine(Environment.GetEnvironmentVariable("appdata"), ApplicationFullName);
+                        if (Directory.Exists(path))
+                        {
+                            return path;
+                        }
+
+                        return string.Empty;
+                    }
+
+                    return key.GetValue("UserDataDir").ToString();
+                }
+            }
+        }
     }
 }
