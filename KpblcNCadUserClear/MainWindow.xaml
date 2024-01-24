@@ -22,18 +22,42 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <CheckBox Content="{Binding ApplicationFullName}"
-                              IsChecked="{Binding CheckedToClear}" />
+                              IsChecked="{Binding CheckedToClear}"
+                              Margin="2"
+                              Padding="1" />
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
         <UniformGrid Grid.Row="1"
                      Rows="1"
                      HorizontalAlignment="Right">
+            <UniformGrid.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="Margin"
+                            Value="4" />
+                    <Setter Property="Padding"
+                            Value="4" />
+                    <Style.Triggers>
+                        <Trigger Property="IsCancel"
+                                 Value="True">
+                            <Setter Property="Foreground"
+                                    Value="Red" />
+                        </Trigger>
+                        <Trigger Property="IsDefault"
+                                 Value="True">
+                            <Setter Property="FontWeight"
+                                    Value="Bold" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </UniformGrid.Resources>
             <Button Content="Очистить"
                     Command="{Binding ClearCommand}"
-                    Click="OnCloseButtonClick" />
+                    Click="OnCloseButtonClick"
+                    IsDefault="True" />
             <Button Content="Отмена"
-                    Click="OnCloseButtonClick" />
+                    Click="OnCloseButtonClick"
+                    IsCancel="True" />
         </UniformGrid>
     </Grid>
 </Window>
